@@ -6,13 +6,12 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:08:27 by tsurma            #+#    #+#             */
-/*   Updated: 2024/01/31 17:40:03 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/02 12:44:01 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include "libft.h"
-#include <stdio.h>
 
 int	main(int argc, char **argv)
 {
@@ -27,27 +26,27 @@ int	main(int argc, char **argv)
 
 
 
-	printf_list(a_head);
+	ft_printf_list(a_head);
 
 }
 
-void	printf_list(t_list *head)
+void	ft_printf_list(t_list *head)
 {
 	t_list	*temp;
 
 	temp = head;
-	printf("%d ", temp->value);
+	ft_printf("%d ", temp->value);
 	temp = temp->next;
 	while (temp != head)
 	{
-		printf("%d ", temp->value);
+		ft_printf("%d ", temp->value);
 		temp = temp->next;
 	}
 }
 
 
 //takes the argument(s), translates them into ints, and adds them into the list.
-static t_list	*arg_translator(t_list *a_head, int argc, char **argv)
+t_list	*arg_translator(t_list *a_head, int argc, char **argv)
 {
 	char	**temp;
 	int		i;
@@ -58,14 +57,16 @@ static t_list	*arg_translator(t_list *a_head, int argc, char **argv)
 		temp = ft_split(argv[1], ' ');
 	else
 		temp = ++argv;
-	new = add_node(ft_atoi(temp[++i]));
+	--argc;
+	new = add_node(ft_atoi(temp[--argc]));
 	new->next = new;
 	new->previous = new;
 	a_head = new;
-	while (temp[++i])
+	while (argc != 0)
 	{
-		new = add_node(ft_atoi(temp[i]));
-		put_last(a_head, new);
+		new = add_node(ft_atoi(temp[argc - 1]));
+		put_first(&a_head, new);
+		argc--;
 	}
 	return (a_head);
 }
@@ -97,22 +98,9 @@ void	extract_node(t_list **head, t_list *node)
 {
 	node->previous->next = node->next;
 	node->next->previous = node->previous;
-	(*head) = node->next;
+	*head = node->next;
 }
 
-//adds a node to the list, at the last position
-void	put_last(t_list *head, t_list *node)
-{
-	t_list	*temp;
-
-	temp = head;
-	while (temp->next != head)
-		temp = temp->next;
-	temp->next = node;
-	node->next = head;
-	node->previous = temp;
-	head->previous = node;
-}
 
 //adds a node to the list, at the first position
 void	put_first(t_list **head, t_list *node)
@@ -154,4 +142,18 @@ void	ra(t_list **head)
 void	rra(t_list **head)
 {
 	*head = (*head)->previous;
+}
+
+//adds a node to the list, at the last position
+void	put_last(t_list *head, t_list *node)
+{
+	t_list	*temp;
+
+	temp = head;
+	while (temp->next != head)
+		temp = temp->next;
+	temp->next = node;
+	node->next = head;
+	node->previous = temp;
+	head->previous = node;
 }
