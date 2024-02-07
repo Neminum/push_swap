@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobias <tobias@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:08:27 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/02 12:44:01 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/05 21:51:41 by tobias           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,19 @@ int	main(int argc, char **argv)
 		return (-1);
 	a_head = arg_translator(a_head, argc, argv);
 
-
-
 	ft_printf_list(a_head);
+	ft_printf_list(b_head);
 
+	// ft_printf("Size A: %d\n", lstsize(a_head));
+	return (0);
 }
 
 void	ft_printf_list(t_list *head)
 {
 	t_list	*temp;
 
+	if (head == NULL)
+		return ;
 	temp = head;
 	ft_printf("%d ", temp->value);
 	temp = temp->next;
@@ -42,33 +45,45 @@ void	ft_printf_list(t_list *head)
 		ft_printf("%d ", temp->value);
 		temp = temp->next;
 	}
+	ft_printf("\n");
 }
-
 
 //takes the argument(s), translates them into ints, and adds them into the list.
 t_list	*arg_translator(t_list *a_head, int argc, char **argv)
 {
 	char	**temp;
-	int		i;
+
+	if (argc == 2)
+	{
+		temp = ft_split(argv[1], ' ');
+		argc = 0;
+		while (temp[argc] != NULL)
+			++argc;
+	}
+	else
+	{
+		temp = ++argv;
+		--argc;
+	}
+	return (initialise(a_head, argc, temp));
+}
+
+//initialises the list for the first time and adds the arguments
+t_list	*initialise(t_list *a_head, int size, char **temp)
+{
 	t_list	*new;
 
-	i = -1;
-	if (argc == 2)
-		temp = ft_split(argv[1], ' ');
-	else
-		temp = ++argv;
-	--argc;
-	new = add_node(ft_atoi(temp[--argc]));
+	new = add_node(ft_atoi(temp[--size]));
 	new->next = new;
 	new->previous = new;
 	a_head = new;
-	while (argc != 0)
+	while (size != 0)
 	{
-		new = add_node(ft_atoi(temp[argc - 1]));
+		new = add_node(ft_atoi(temp[size - 1]));
 		put_first(&a_head, new);
-		argc--;
+		size--;
 	}
-	return (a_head);
+	return(a_head);
 }
 
 //creates a new node with a pointer
@@ -76,72 +91,41 @@ t_list	*add_node(int value)
 {
 	t_list	*node;
 
-	node = malloc(sizeof(*node));
+	node = ft_calloc(1, sizeof(*node));
 	if (!node)
 		return (NULL);
 	node->value = value;
-	node->previous = NULL;
-	node->next = NULL;
 	return (node);
 }
 
-void	pb(t_list **a_head, t_list **b_head)
+//takes a node out of continuity of its list
+void	extract_node(t_list **head)
 {
-	t_list	*temp;
-
-	temp = *a_head;
-	extract_node(a_head, temp);
-	put_first(b_head, temp);
+	if ((*head)->next == *head)
+	{
+		(*head) = NULL;
+		return ;
+	}
+	(*head)->previous->next = (*head)->next;
+	(*head)->next->previous = (*head)->previous;
+	*head = (*head)->next;
 }
-
-void	extract_node(t_list **head, t_list *node)
-{
-	node->previous->next = node->next;
-	node->next->previous = node->previous;
-	*head = node->next;
-}
-
 
 //adds a node to the list, at the first position
 void	put_first(t_list **head, t_list *node)
 {
+	if (*head == NULL)
+	{
+		*head = node;
+		(*head)->previous = *head;
+		(*head)->next = *head;
+		return ;
+	}
 	node->previous = (*head)->previous;
 	node->next = (*head);
 	(*head)->previous->next = node;
 	(*head)->previous = node;
 	(*head) = node;
-}
-
-//swaps the values of two nodes
-int	swap(t_list *a, t_list *b)
-{
-	if (!a || !b)
-		return (-1);
-	a->value = a->value ^ b->value;
-	b->value = a->value ^ b->value;
-	a->value = a->value ^ b->value;
-	return (0);
-}
-
-//swaps the values of the first 2 nodes in list
-int	sa(t_list *head)
-{
-	if (head->next == head)
-		return (1);
-	swap(head, head->next);
-	return (0);
-}
-
-//rotates list so the first value becomes the last
-void	ra(t_list **head)
-{
-	*head = (*head)->next;
-}
-
-//rotates list so the last value becomes the first
-void	rra(t_list **head)
-{
-	*head = (*head)->previous;
 }
 
 //adds a node to the list, at the last position
@@ -156,4 +140,26 @@ void	put_last(t_list *head, t_list *node)
 	node->next = head;
 	node->previous = temp;
 	head->previous = node;
+}
+
+int		lstsize(t_list *head)
+{
+	t_list	*temp;
+	int		i;
+
+	if (head == NULL)
+		return (0);
+	i = 1;
+	temp = head;
+	while (temp->next != head)
+	{
+		temp = temp->next;
+		i++;
+	}
+	return (i);
+}
+
+void	bubblesort(t_list **head)
+{
+	
 }
