@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap_push&swap.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobias <tobias@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 14:11:07 by tobias            #+#    #+#             */
-/*   Updated: 2024/02/05 17:07:23 by tobias           ###   ########.fr       */
+/*   Updated: 2024/02/07 17:28:57 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ void	pa(t_list **a_head, t_list **b_head)
 {
 	t_list	*temp;
 
-	if (*a_head == NULL)
+	if (*b_head == NULL)
 	{
 		ft_printf("B is empty, push failed\n");
 		exit(0);
 	}
-	temp = *a_head;
-	extract_node(a_head);
-	put_first(b_head, temp);
+	temp = *b_head;
+	extract_node(b_head);
+	put_first(a_head, temp);
 }
 
 void	pb(t_list **a_head, t_list **b_head)
