@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:08:27 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/12 17:20:54 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/12 19:13:06 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int argc, char **argv)
 		sort_five(&a_head, &b_head);
 	if (argc >= 6)
 		radix_sort(&a_head, &b_head);
+	free_list(a_head, b_head);
 	return (0);
 }
 
@@ -52,7 +53,7 @@ t_list	*arg_translator(t_list *a_head, int argc, char **argv)
 		while (temp[argc] != NULL)
 			++argc;
 		if (argc == 0)
-			exit (0);
+			free_list(a_head, NULL);
 	}
 	else
 	{
@@ -123,7 +124,7 @@ void	check_doubles(t_list *head)
 			if (tempi->value == tempj->value)
 			{
 				write(2, "Error\n", 7);
-				exit (0);
+				free_list(head, NULL);
 			}
 			tempi = tempi->next;
 		}

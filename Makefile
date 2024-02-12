@@ -6,7 +6,7 @@
 #    By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/27 15:40:37 by tsurma            #+#    #+#              #
-#    Updated: 2024/02/12 16:37:46 by tsurma           ###   ########.fr        #
+#    Updated: 2024/02/12 19:07:37 by tsurma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ SRC = push_swap.c\
 	push_swap_push_swap.c\
 	push_swap_radix.c\
 	push_swap_rotations.c\
-	push_swap_sort.c
+	push_swap_sort.c\
+	push_swap_free.c
 
 OBJ = $(SRC:.c=.o)
 

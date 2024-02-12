@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 11:09:14 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/12 16:11:27 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/12 19:11:48 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ void	radix_sort(t_list **stack_a, t_list **stack_b);
 int		get_max_bits(t_list **head);
 void	sort_five(t_list **head_a, t_list **head_b);
 void	check_doubles(t_list *head);
+void	free_list(t_list *a_head, t_list *b_head);
 
 #endif
