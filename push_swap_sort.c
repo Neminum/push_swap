@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap_3.c                                      :+:      :+:    :+:   */
+/*   push_swap_sort.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:03:44 by tobias            #+#    #+#             */
-/*   Updated: 2024/02/07 17:29:14 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:09:02 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include "libft.h"
 
 int	is_sorted(t_list *head)
 {
@@ -19,7 +18,6 @@ int	is_sorted(t_list *head)
 
 	if (head == NULL)
 		return (-1);
-
 	temp = head;
 	while (temp->next != head)
 	{
@@ -44,68 +42,54 @@ void	sort_three(t_list **head)
 		ra(head);
 	else
 		sa(*head);
-	if (is_sorted(*head) == -1)
-		rra(head);
+	if (is_sorted(*head) == 0)
+		return ;
+	rra(head);
 }
 
-
-
-void	sort_four(t_list **stack_a, t_list **stack_b)
+void	sort_four(t_list **head_a, t_list **head_b)
 {
 	int	distance;
 
-	distance = find_diff(*stack_a, find_mindex(stack_a, -1));
+	distance = find_diff(*head_a, find_mindex(head_a, -1));
 	if (distance == 1)
-		ra(stack_a);
+		ra(head_a);
 	else if (distance == 2)
 	{
-		ra(stack_a);
-		ra(stack_a);
+		ra(head_a);
+		ra(head_a);
 	}
 	else if (distance == 3)
-		rra(stack_a);
-	if (is_sorted(*stack_a) == 0)
+		rra(head_a);
+	if (is_sorted(*head_a) == 0)
 		return ;
-	pb(stack_a, stack_b);
-	sort_three(stack_a);
-	pa(stack_a, stack_b);
+	pb(head_a, head_b);
+	sort_three(head_a);
+	pa(head_a, head_b);
 }
 
-
-
-int	find_diff(t_list *head, int index)
+void	sort_five(t_list **head_a, t_list **head_b)
 {
-	t_list	*temp;
-	int		diff;
+	int	distance;
 
-
-	if (head->index == index)
-		return (0);
-	temp = head->next;
-	diff = 1;
-	while (temp != head)
+	distance = find_diff(*head_a, find_mindex(head_a, -1));
+	if (distance == 1)
+		ra(head_a);
+	else if (distance == 2)
 	{
-		if (temp->index == index)
-			return (diff);
-		temp = temp->next;
-		++diff;
+		ra(head_a);
+		ra(head_a);
 	}
-	ft_printf("Couldnt find DIFF");
-	exit (0);
-}
-
-int	find_mindex(t_list **head, int val)
-{
-	t_list	*temp;
-	int		mindex;
-
-	mindex = (*head)->index;
-	temp = (*head)->next;
-	while (temp != *head)
+	else if (distance == 3)
 	{
-		if ((temp->index < mindex) && temp->index != val)
-			mindex = temp->index;
-		temp = temp->next;
+		rra(head_a);
+		rra(head_a);
 	}
-	return (mindex);
+	else if (distance == 4)
+		rra(head_a);
+	if (is_sorted(*head_a) == 0)
+		return ;
+	pb(head_a, head_b);
+	sort_four(head_a, head_b);
+	pa(head_a, head_b);
 }

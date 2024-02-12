@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:56:41 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/07 16:57:32 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/12 15:23:50 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	indexing(t_list *a_head)
 	temp = NULL;
 	index = 0;
 	temp = find_lowest(a_head);
-
 	while (temp != NULL)
 	{
 		temp->index = index;
@@ -69,4 +68,40 @@ t_list	*find_lowest(t_list *head)
 	if (temp->value < tempmin->value)
 		tempmin = temp;
 	return (tempmin);
+}
+
+int	find_mindex(t_list **head, int val)
+{
+	t_list	*temp;
+	int		mindex;
+
+	mindex = (*head)->index;
+	temp = (*head)->next;
+	while (temp != *head)
+	{
+		if ((temp->index < mindex) && temp->index != val)
+			mindex = temp->index;
+		temp = temp->next;
+	}
+	return (mindex);
+}
+
+int	find_diff(t_list *head, int index)
+{
+	t_list	*temp;
+	int		diff;
+
+	if (head->index == index)
+		return (0);
+	temp = head->next;
+	diff = 1;
+	while (temp != head)
+	{
+		if (temp->index == index)
+			return (diff);
+		temp = temp->next;
+		++diff;
+	}
+	ft_printf("Couldnt find DIFF");
+	exit (0);
 }

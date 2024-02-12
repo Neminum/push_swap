@@ -6,12 +6,11 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:08:27 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/07 17:20:41 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/12 17:20:54 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include "libft.h"
 
 int	main(int argc, char **argv)
 {
@@ -23,11 +22,9 @@ int	main(int argc, char **argv)
 	if (argc < 2)
 		return (-1);
 	a_head = arg_translator(a_head, argc, argv);
+	check_doubles(a_head);
 	if (is_sorted(a_head) == 0)
-	{
-		ft_printf_list(a_head);
 		return (0);
-	}
 	argc = lstsize(a_head);
 	indexing(a_head);
 	if (argc == 2)
@@ -36,42 +33,11 @@ int	main(int argc, char **argv)
 		sort_three(&a_head);
 	if (argc == 4)
 		sort_four(&a_head, &b_head);
-	ft_printf_list(a_head);
+	if (argc == 5)
+		sort_five(&a_head, &b_head);
+	if (argc >= 6)
+		radix_sort(&a_head, &b_head);
 	return (0);
-}
-
-void	ft_printf_list(t_list *head)
-{
-	t_list	*temp;
-
-	if (head == NULL)
-		return ;
-	temp = head;
-	ft_printf("%d ", temp->value);
-	temp = temp->next;
-	while (temp != head)
-	{
-		ft_printf("%d ", temp->value);
-		temp = temp->next;
-	}
-	ft_printf("\n");
-}
-
-void	ft_printf_index(t_list *head)
-{
-	t_list	*temp;
-
-	if (head == NULL)
-		return ;
-	temp = head;
-	ft_printf("%d ", temp->index);
-	temp = temp->next;
-	while (temp != head)
-	{
-		ft_printf("%d ", temp->index);
-		temp = temp->next;
-	}
-	ft_printf("\n");
 }
 
 //takes the argument(s), translates them into ints, and adds them into the list.
@@ -85,6 +51,8 @@ t_list	*arg_translator(t_list *a_head, int argc, char **argv)
 		argc = 0;
 		while (temp[argc] != NULL)
 			++argc;
+		if (argc == 0)
+			exit (0);
 	}
 	else
 	{
@@ -112,84 +80,11 @@ t_list	*initialise(t_list *a_head, int size, char **temp)
 	return (a_head);
 }
 
-//creates a new node with a pointer
-t_list	*add_node(int value)
-{
-	t_list	*node;
-
-	node = ft_calloc(1, sizeof(*node));
-	if (!node)
-		return (NULL);
-	node->value = value;
-	return (node);
-}
-
-//takes a node out of continuity of its list
-void	extract_node(t_list **head)
-{
-	if ((*head)->next == *head)
-	{
-		(*head) = NULL;
-		return ;
-	}
-	(*head)->previous->next = (*head)->next;
-	(*head)->next->previous = (*head)->previous;
-	*head = (*head)->next;
-}
-
-//adds a node to the list, at the first position
-void	put_first(t_list **head, t_list *node)
-{
-	if (*head == NULL)
-	{
-		*head = node;
-		(*head)->previous = *head;
-		(*head)->next = *head;
-		return ;
-	}
-	node->previous = (*head)->previous;
-	node->next = (*head);
-	(*head)->previous->next = node;
-	(*head)->previous = node;
-	(*head) = node;
-}
-
-//adds a node to the list, at the last position
-void	put_last(t_list *head, t_list *node)
-{
-	t_list	*temp;
-
-	temp = head;
-	while (temp->next != head)
-		temp = temp->next;
-	temp->next = node;
-	node->next = head;
-	node->previous = temp;
-	head->previous = node;
-}
-
-int		lstsize(t_list *head)
-{
-	t_list	*temp;
-	int		i;
-
-	if (head == NULL)
-		return (0);
-	i = 1;
-	temp = head;
-	while (temp->next != head)
-	{
-		temp = temp->next;
-		i++;
-	}
-	return (i);
-}
-
 int	ft_atoi_err(const char *nptr)
 {
-	int	i;
-	int	m;
-	int	r;
+	int			i;
+	int			m;
+	long int	r;
 
 	i = 0;
 	r = 0;
@@ -204,12 +99,68 @@ int	ft_atoi_err(const char *nptr)
 	}
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 		r = (r * 10) + (nptr[i++] - 48);
-	if (nptr[i] != 0)
+	if (nptr[i] != 0 || r > __INT_MAX__ || (-r) < (-__INT_MAX__ - 1))
 	{
-		ft_printf("Inputs must be Integers");
+		write(2, "Error\n", 7);
 		exit (0);
 	}
 	if (m == 1)
 		return (-r);
 	return (r);
 }
+
+void	check_doubles(t_list *head)
+{
+	t_list	*tempi;
+	t_list	*tempj;
+
+	tempj = head->next;
+	while (tempj != head)
+	{
+		tempi = tempj->next;
+		while (tempi != tempj)
+		{
+			if (tempi->value == tempj->value)
+			{
+				write(2, "Error\n", 7);
+				exit (0);
+			}
+			tempi = tempi->next;
+		}
+		tempj = tempj->next;
+	}
+}
+
+// void	ft_printf_list(t_list *head)
+// {
+// 	t_list	*temp;
+
+// 	if (head == NULL)
+// 		return ;
+// 	temp = head;
+// 	ft_printf("%d ", temp->value);
+// 	temp = temp->next;
+// 	while (temp != head)
+// 	{
+// 		ft_printf("%d ", temp->value);
+// 		temp = temp->next;
+// 	}
+// 	ft_printf("\n");
+// }
+
+// void	ft_printf_index(t_list *head)
+// {
+// 	t_list	*temp;
+
+// 	if (head == NULL)
+// 		return ;
+// 	temp = head;
+// 	ft_printf("%d ", temp->index);
+// 	temp = temp->next;
+// 	while (temp != head)
+// 	{
+// 		ft_printf("%d ", temp->index);
+// 		temp = temp->next;
+// 	}
+// 	ft_printf("\n");
+// }
