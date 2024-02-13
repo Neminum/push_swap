@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobias <tobias@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:08:27 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/12 19:13:06 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/12 23:55:31 by tobias           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv)
 	a_head = arg_translator(a_head, argc, argv);
 	check_doubles(a_head);
 	if (is_sorted(a_head) == 0)
-		return (0);
+		free_list(a_head, b_head);
 	argc = lstsize(a_head);
 	indexing(a_head);
 	if (argc == 2)
@@ -45,7 +45,8 @@ int	main(int argc, char **argv)
 t_list	*arg_translator(t_list *a_head, int argc, char **argv)
 {
 	char	**temp;
-
+	t_list* output;
+	
 	if (argc == 2)
 	{
 		temp = ft_split(argv[1], ' ');
@@ -53,35 +54,42 @@ t_list	*arg_translator(t_list *a_head, int argc, char **argv)
 		while (temp[argc] != NULL)
 			++argc;
 		if (argc == 0)
+		{
+			free_temp(temp);
 			free_list(a_head, NULL);
+		}
+		output = initialise(a_head, argc, temp, 1);
 	}
 	else
 	{
 		temp = ++argv;
 		--argc;
+		output = initialise(a_head, argc, temp, 0);
 	}
-	return (initialise(a_head, argc, temp));
+	return (output);
 }
 
 //initialises the list for the first time and adds the arguments
-t_list	*initialise(t_list *a_head, int size, char **temp)
+t_list	*initialise(t_list *a_head, int size, char **temp, int allowfree)
 {
 	t_list	*new;
 
-	new = add_node(ft_atoi_err(temp[--size]));
+	new = add_node(ft_atoi_err(temp[--size], allowfree, temp, a_head));
 	new->next = new;
 	new->previous = new;
 	a_head = new;
 	while (size != 0)
 	{
-		new = add_node(ft_atoi_err(temp[size - 1]));
+		new = add_node(ft_atoi_err(temp[size - 1], allowfree, temp, a_head));
 		put_first(&a_head, new);
 		size--;
 	}
+	if (allowfree == 1)
+		free_temp(temp);
 	return (a_head);
 }
 
-int	ft_atoi_err(const char *nptr)
+int	ft_atoi_err(const char *nptr, int allowfree, char** temp, t_list *a_head)
 {
 	int			i;
 	int			m;
@@ -103,6 +111,9 @@ int	ft_atoi_err(const char *nptr)
 	if (nptr[i] != 0 || r > __INT_MAX__ || (-r) < (-__INT_MAX__ - 1))
 	{
 		write(2, "Error\n", 7);
+		if (allowfree == 1)
+			free_temp(temp);
+		free_list(a_head, NULL);
 		exit (0);
 	}
 	if (m == 1)

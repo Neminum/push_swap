@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap_free.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobias <tobias@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 18:59:28 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/12 19:11:32 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/12 22:51:13 by tobias           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	free_list(t_list *a_head, t_list *b_head)
 		{
 			temp = temp->next;
 			free(temp->previous);
+			temp->previous = NULL;
 		}
 		free(temp);
 	}
@@ -39,4 +40,14 @@ void	free_list(t_list *a_head, t_list *b_head)
 		free(temp);
 	}
 	exit (0);
+}
+
+void	free_temp(char **temp)
+{
+	int	i;
+
+	i = 0;
+	while (temp[i])
+		free(temp[i++]);
+	free(temp);
 }

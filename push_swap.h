@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobias <tobias@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 11:09:14 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/12 19:11:48 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/12 23:54:53 by tobias           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ typedef struct s_list
 //startup
 int		main(int argc, char **argv);
 t_list	*arg_translator(t_list *a_head, int argc, char **argv);
-t_list	*initialise(t_list *a_head, int size, char **temp);
+t_list	*initialise(t_list *a_head, int size, char **temp, int allowfree);
 t_list	*add_node(int value);
-int		ft_atoi_err(const char *nptr);
+int		ft_atoi_err(const char *nptr, int allowfree, char** temp, t_list *a_head);
+void	free_temp(char **temp);
 
 void	extract_node(t_list **head);
 void	put_first(t_list **head, t_list *node);

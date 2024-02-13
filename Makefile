@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+         #
+#    By: tobias <tobias@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/27 15:40:37 by tsurma            #+#    #+#              #
-#    Updated: 2024/02/12 19:07:37 by tsurma           ###   ########.fr        #
+#    Updated: 2024/02/12 22:07:20 by tobias           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra -g3
 NAME = push_swap
 MAKEFLAGS = --no-print-directory
 
