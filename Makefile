@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tobias <tobias@student.42.fr>              +#+  +:+       +#+         #
+#    By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/27 15:40:37 by tsurma            #+#    #+#              #
-#    Updated: 2024/02/12 22:07:20 by tobias           ###   ########.fr        #
+#    Updated: 2024/02/14 12:13:29 by tsurma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ SRC = push_swap.c\
 	push_swap_radix.c\
 	push_swap_rotations.c\
 	push_swap_sort.c\
-	push_swap_free.c
+	push_swap_free.c\
+	push_swap_init.c
 
 OBJ = $(SRC:.c=.o)
 
